@@ -1,0 +1,445 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amssymb,amsmath,amsthm,amsfonts}
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{gensymb}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\setmarginsrb{3 cm}{1.0 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{pst-all}
+\usepackage{pstricks}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+    keywordstyle=\color{codepurple},
+    breaklines=true,
+    basicstyle=\ttfamily\footnotesize,
+    numbers=left,
+    }
+\title{Sistema de Votaciones}					% Titulo
+\author{Catalina Pérez \linebreak
+\linebreak
+\newline
+\bttext{Profesor: \linebreak Marcos Fantoval}}
+\date{29 de Abril del 2025}% Fecha
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{subfigure}
+\usepackage{gensymb}
+\cfoot{\thepage}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\centering
+    \vspace*{0.0 cm}
+    \includegraphics[scale = 0.5]{unnamed.png}\\[1.0 cm]	% Logo Universidad
+    \textsc{\LARGE Universidad Diego Portales}\\[0.2 cm]	% Nombre Universidad
+	\textsc{\large ESCUELA DE INFORMÁTICA \& TELECOMUNICACIONES}\\[2 cm]		% Nombre Curso
+	\textsc{\LARGE ESTRUCTURAS DE DATOS \& ANÁLISIS DE ALGORITMOS}\\[1.0 cm]	% Nombre Universidad
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
+	
+	\begin{minipage}{1.0\textwidth}
+		\begin{center} \large
+			\emph{Autor:\par}
+			\theauthor\linebreak
+			\end{center}
+	\end{minipage}\\[1.5 cm]	
+	{\large \thedate}\\[1 cm]
+ 
+	%\vfill
+	
+\end{titlepage}
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section{Introducción}
+
+El presente informe tiene como finalidad la implementación de un sistema de votaciones llamado "\textbf{Electo}". Las herramientas utilizadas son estructuras de datos primordiales como listas enlazadas, colas, y pilas. 
+
+El objetivo central es lograr desarrollar un programa que permita garantizar la integridad de los votos, evitar duplicaciones, permitir cambiar estado de voto a votante, y facilitar la obtención de resultados.
+
+Además de la implementación, este laboratorio requiere un análisis teórico de la complejidad temporal de los métodos usados, la estimación de los recursos de memoria que se necesitan para almacenar todos los votos, una propuesta de mejora para modificar el sistema electoral para múltiples facultades, y por último, las ventajas y desventajas de utilizar listas enlazadas en lugar de arreglos.
+
+\pagebreak
+
+\section{Implementación}
+\subsection{Clase Voto }
+\begin{verbatim}
+    
+\end{verbatim}
+\begin{lstlisting}[language=Java,style=mystyle]    
+public class Voto{
+    private int id;
+    private int votanteId;
+    private int candidatoId;
+    private String timestamp;
+    
+    public Voto(int id, int votanteId, int  candidatoId, String timestamp){
+        this.id = id;
+        this.votanteId = votanteId;
+        this.candidatoId = candidatoId;
+        this.timestamp = timestamp;
+    }
+    
+    public int getId(){
+        return id;
+    }
+    public int getVotanteId(){
+        return votanteId;
+    }
+    public int getCandidatoId(){
+        return candidatoId;
+    }
+    public String getTimestamp(){
+        return timestamp;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
+    public void setVotanteId(int votanteId){
+        this.votanteId = votanteId;
+    }
+    public void setCandidatoId(int candidatoId){
+        this.candidatoId = candidatoId;
+    }
+    public void setTimestamp(String timestamp){
+        this.timestamp = timestamp;
+    }
+}
+\end{lstlisting}
+\pagebreak
+\subsubsection{Explicación Clase Voto}
+
+La clase Voto es una pieza fundamental en sistema de votación, ya que representa la unidad básica del proceso electoral. En esta implementación, se busca encapsular todos los datos relevantes asociados al voto.
+
+Esta clase implementa los atributos como el id, votanteId, candidatoId, y el timestamp. También los métodos implementados incluyen al constructor, y también los setters y los getters. 
+
+Los atributos utilizados son:
+\begin{itemize}
+    \item \textbf{id}: Único para cada voto.
+    \item \textbf{VotanteId}: Es el ID del votante, para que así no hayan votos 
+        duplicados.
+        \item \textbf{CandidatoId}: Es el ID del candidato seleccionado.
+        \item \textbf{timestamp}: Hora del voto en formato "hh:mm:ss".
+\end{itemize}
+
+Los métodos utilizados son:
+\begin{itemize}
+    \item \textbf{Voto()}: Constructor de la clase.
+    \item \textbf{Getters y Setters}: Permiten retornar y modificar los atributos. 
+\end{itemize}
+
+
+\pagebreak
+
+\subsection{Clase Candidato}
+
+\begin{lstlisting}[language=Java,style=mystyle] 
+public class Candidato{
+    private int id;
+    private String nombre;
+    private String partido;
+    private Queue <Voto> votosRecibidos;
+    
+    public Candidato(int id, String nombre, String partido){
+        this.id = id;
+        this.nombre = nombre;
+        this.partido = partido;
+        this.votosRecibidos = new LinkedList<>();
+    }
+    
+    public int getId(){
+        return id;
+    }
+    
+    public String getNombre(){
+        return nombre;
+    }
+    
+    public String getPartido(){
+        return partido;
+    }
+    
+    public Queue<Voto> getVotosRecibidos(){
+        return votosRecibidos;
+    }
+    
+    public Void agregarVoto(Voto v){
+        votosRecibidos.add(v);
+    }
+}
+\end{lstlisting}
+\pagebreak
+\subsubsection{Explicación Clase Candidato}
+
+La clase Candidato se encarga de almacenar la información de un candidato, incluyendo su id, nombre, partido político, y los votos que se han recibido. Esta clase permite gestionar los votos asignados a un candidato mediante una cola, lo que facilita la organización y el conteo de votos a medida que se registran.
+
+Los atributos utilizados son:
+\begin{itemize}
+    \item \textbf{id}: Id del candidato.
+    \item \textbf{nombre}: Nombre del candidato.
+    \item \textbf{partido}: Partido político del candidato.
+    \item \textbf{votosRecibidos}: Votos que ha recibido el candidato.
+\end{itemize}
+
+Los métodos utilizados son:
+\begin{itemize}
+    \item \textbf{getId()}: Devuelve el id del candidato.
+    \item \textbf{getNombre()}: Devuelve el nombre del candidato.
+    \item \textbf{getPartido()}: Devuelve el partido político del candidato.
+    \item \textbf{getVotosRecibidos()}: Devuelve la cola de votos que ha recibido el candidato.
+    \item \textbf{agregarVoto(Voto v)}: Agrega un voto a la cola de votos recibidos del candidato.
+\end{itemize}
+\pagebreak
+
+\subsection{Clase Votante}
+\begin{lstlisting}[language=Java,style=mystyle]
+public class Votante{
+    private int id;
+    private String nombre;
+    private boolean yaVoto;
+
+    public Votante(int id, String nombre, boolean yaVoto){
+        this.id = id;
+        this.nombre = nombre;
+        this.yaVoto = yaVoto;
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public String getNombre(){
+        return nombre;
+    }
+
+    public boolean getYaVoto(){
+        return yaVoto;
+    }
+
+    public void marcarComoVotado(){
+        yaVoto = true;
+    }
+}
+\end{lstlisting}
+\pagebreak
+
+\subsubsection{Explicación Clase Votante}
+
+La clase Votante gestiona la la información de los votantes, incluyendo su id, nombre y un indicador que señala si el votante ya votó. El objetivo de esta clase es garantizar que un votante solo pueda votar una vez. 
+
+Los atributos utilizados son:
+\begin{itemize}
+    \item \textbf{id}: Id del votante.
+    \item \textbf{nombre}: Nombre del votante.
+    \item \textbf{yaVoto}: Booleano.
+\end{itemize}
+
+Los métodos utilizados son: 
+\begin{itemize}
+    \item \textbf{getId()}: Devuelve el id del votante.
+    \item \textbf{getNombre()}: Devuelve el nombre del votante.
+    \item \textbf{getYaVoto()}: Devuelve el booleano para ver si el votante ya votó.
+    \item \textbf{marcarComoVotado()}: Cambia el estado del votante, indicando que ya no puede votar.
+\end{itemize}
+
+\pagebreak
+
+\subsection{Clase UrnaElectoral}
+\begin{lstlisting}[language=Java,style=mystyle]
+public class UrnaElectoral{
+    private LinkedList <Candidato> listaCandidatos;
+    private Stack <Voto> historialVotos;
+    private Queue <Voto> votosReportados;
+    private int idCounter = 0;
+
+    public UrnaElectoral(){
+        this.listaCandidatos = new LinkedList<>();
+        this.historialVotos = new Stack<>();
+        this.votosReportados = new LinkedList<>();
+    }
+
+    public boolean verificarVotante(Votante votante){
+        return votante.getYaVoto();
+    }
+
+    public boolean registrarVoto(Votante votante, int candidatoId){
+        if (!verificarVotante(votante)){
+            for (Candidato c : listaCandidatos){
+                if (c.getId() == candidatoId){
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                    String timeStamp = sdf.format(new Date());
+                    Voto registrarVoto = new Voto(idCounter++, votante.getId(), candidatoId, timeStamp);
+                    c.agregarVoto(registrarVoto);
+                    historialVotos.push(registrarVoto);
+                    votante.marcarComoVotado();
+                    return true;
+                }
+            }
+        }
+    return false;
+}
+
+    public boolean reportarVoto(int candidatoId, int votoId){
+        for (Candidato c : listaCandidatos){
+            if (c.getId() == candidatoId){
+                Queue<Voto> votos = c.getVotosRecibidos();
+                for (Voto v : votos){
+                    if (v.getId() == votoId){
+                        votos.remove(v);
+                        votosReportados.add(v);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public Map<Integer, Integer> obtenerResultados(){
+        Map<Integer, Integer> resultados = new HashMap<>();
+        for (Candidato c : listaCandidatos){
+            resultados.put(c.getId(), c.getVotosRecibidos().size());
+        }
+        return resultados;
+    }
+}
+
+
+\end{lstlisting}
+\pagebreak
+\subsubsection{Explicacion Clase UrnaElectoral}
+
+Los atributos utlizados son: 
+\begin{itemize}
+    \item \textbf{listaCandidatos}: Una lista enlazada que contiene a los candidatos.
+    \item \textbf{historialVotos }: Una pila que almacena los votos en orden cronológico inverso.
+    \item \textbf{votosReportados }: Una cola que contiene los votos anulados o impugnados.
+    \item \textbf{idCounter }: Un contador que se usa para los id de cada voto.
+
+
+\end{itemize}
+
+Los métodos utilizados son:
+\begin{itemize}
+    \item \textbf{verificarVotante(Votante votante)}: Verifica si el votante ya ha votado.
+    \item \textbf{registrarVoto(Votante votante, int candidatoId)}: Utiliza el método "verificarVotante", para luego registrar el voto en el candidato correspondiente, y añadirlo en el historial.
+    \item \textbf{reportarVoto(Candidato candidatoId, int votoId)}: Mueve un voto a la cola de votos reportados de un candidato. 
+    \item \textbf{obtenerResultados( )}: Retorna un mapa, mostrando los votos recibidos por cada candidato.
+
+\end{itemize}
+
+\pagebreak
+
+\section{Análisis}
+\subsection{Complejidad de tiempo teórica}
+
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Clase& Método& Complejidad\\ \hline
+        UrnaElectoral& registrarVoto& O(n)\\ \hline
+        UrnaElectoral& obtenerResultados& O(n)\\ \hline
+        UrnaElectoral& reportarVoto& O(n * m)\\ \hline
+    \end{tabular}
+    \caption{ Big-O}
+    \label{tab:placeholder_label}
+\end{table}
+
+\begin{enumerate}
+    \item \textbf{O(n)}: Se recorre la lista de candidatos.
+    \item \textbf{O(n)}: Recorre una vez la lista de candidatos para contar sus respectivos votos, y aunque se utiliza un map, este no afecta la complejidad de tiempo teórica.
+    \item \textbf{O(n*m)}: Se recorren los candidatos (n) y luego los votos del candidato (m).
+\end{enumerate}
+
+\subsection{Gestión de memoria}
+La cantidad de memoria necesaria para almacenar los votos en el sistema depende de la cantidad información almacenada en cada voto y del número de votantes que el sistema puede manejar. En este caso, si cada voto ocupa 64 bytes de memoria, y el sistema admite 10 millones de votantes, podemos multiplicar el tamaño de un voto por el numero total de votos.
+
+\(   Espacio Requerido = 10.000.000 (votos) * 64 (bytes)= 640.000.000 (bytes) = 610MB
+
+Por ende el sistema requiere aproximadamente 640 MB de memoria para almacenar los votos emitidos. 
+
+\subsection{Propuesta de mejora}
+
+Para que el sistema soporte votaciones en múltiples facultades, propongo la siguiente modificación en el sistema:
+
+\begin{itemize}
+    \item Agregar una clase Facultades que contenga los atributos "nombre", e "idFacultad", la cual agruparía de forma independiente sus respectivos candidatos, votantes y urnas electorales. 
+\end{itemize}
+
+\pagebreak
+
+\subsection{¿Cómo se podría mantener el historial de votos en orden cronológico inverso?}
+ 
+Para mantener el historial de votos en orden cronológico inverso, se puede utilizar un stack para almacenar los votos. Un stack es una estructura de datos LIFO (Last In, First Out), por lo que el último elemento en entrar es el primero en salir. De esta manera, el último voto registrado siempre va a estar en la parte superior del stack, así se puede obtener los votos en orden cronológico inverso. 
+
+
+\subsection{Ventajas y desventajas de utilizar listas enlazadas en lugar de arreglos  }
+
+\textbf{Ventajas:} 
+\begin{itemize}
+    \item Permiten agregar y eliminar elementos fácilmente, sin necesidad de mover otros datos, y además se adaptan bien cuando la cantidad de información va cambiando.
+    \item Al utilizar listas enlazadas no es necesario saber con anticipación cuántos candidatos, votos o votantes hay, ya que las listas crecen de manera dinámica.
+\end{itemize}
+
+\textbf{Desventajas}: 
+\begin{itemize}
+    \item Al acceder a un elemento específico es más lento que en un arreglo, porque hay que recorrer la lista.
+    \item En una lista enlazada cada elemento es un objeto, lo que significa que cada uno de estos ocupa más espacio, por lo tanto si hay millones de votos, la memoria total seria mucho mayor que con un arreglo.
+\end{itemize}
+
+En general, como en este sistema es más importante agregar y manejar datos de forma flexible que acceder rápido a una posición específica, las listas enlazadas son una mejor opción que los arreglos.
+
+\pagebreak
+
+\section{Conclusión}
+
+El desarrollo de este sistema de votaciones ha sido una excelente oportunidad para aplicar conceptos clave de estructuras de datos como listas enlazadas, pilas y colas, en el contexto de la gestión de votos. La implementación de estas estructuras permitió organizar eficientemente los votos y gestionar el historial de manera efectiva.
+
+A través de un análisis de complejidad temporal, se evaluó la eficiencia de los métodos implementados, ayudando a comprender el rendimiento del sistema en términos de tiempo de ejecución.
+
+En cuanto a la gestión de memoria, se realizó un cálculo del espacio necesario para almacenar los votos, lo que proporciona una estimación precisa de los recursos requeridos, permitiendo planificar mejor el sistema para escenarios de gran escala.
+
+Por último, se propusieron mejoras al sistema, como la gestión de votaciones en múltiples facultades, y la incorporación de más atributos. Esto permitiría ampliar la funcionalidad del sistema y hacerlo más flexible.
+
+En resumen, este proyecto no solo fortaleció los conocimientos teóricos sobre estructuras de datos y programación orientada a objetos, sino que también proporcionó una valiosa experiencia práctica en el diseño de sistemas escalables y eficientes. A medida que se exploran mejoras adicionales, el sistema tiene el potencial de convertirse en una herramienta aún más poderosa para gestionar votaciones de manera segura y eficiente.
+
+\section{Link GitHub}
+
+\url{https://github.com/tropikalcat/EDDA-lab}
+
+\end{document}
