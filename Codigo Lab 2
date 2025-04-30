@@ -1,24 +1,24 @@
-class Voto{
+public class Voto{
     private int id;
-    private int votanteID;
-    private int candidatoID;
+    private int votanteId;
+    private int candidatoId;
     private String timestamp;
     
-    public Voto(int id, int votanteID, int  candidatoID, String timestamp){
+    public Voto(int id, int votanteId, int  candidatoId, String timestamp){
         this.id = id;
-        this.votanteID = votanteID;
-        this.candidatoID = candidatoID;
-        this. timestamp = timestamp;
+        this.votanteId = votanteId;
+        this.candidatoId = candidatoId;
+        this.timestamp = timestamp;
     }
     
     public int getId(){
         return id;
     }
-    public int getVotanteID(){
-        return votanteID;
+    public int getVotanteId(){
+        return votanteId;
     }
-    public int getCandidatoID(){
-        return candidatoID;
+    public int getCandidatoId(){
+        return candidatoId;
     }
     public String getTimestamp(){
         return timestamp;
@@ -26,18 +26,18 @@ class Voto{
     public void setId(int id){
         this.id = id;
     }
-    public void setVotanteID(int votanteID){
-        this.votanteID = votanteID;
+    public void setVotanteId(int votanteId){
+        this.votanteId = votanteId;
     }
-    public void setCandidatoID(int candidatoID){
-        this.candidatoID = candidatoID;
+    public void setCandidatoId(int candidatoId){
+        this.candidatoId = candidatoId;
     }
     public void setTimestamp(String timestamp){
         this.timestamp = timestamp;
     }
 }
 
-class Candidato{
+public class Candidato{
     private int id;
     private String nombre;
     private String partido;
@@ -76,7 +76,7 @@ public class Votante{
     private String nombre;
     private boolean yaVoto;
 
-    public Votante(int id, String nombre, Boolean yaVoto){
+    public Votante(int id, String nombre, boolean yaVoto){
         this.id = id;
         this.nombre = nombre;
         this.yaVoto = yaVoto;
@@ -99,47 +99,45 @@ public class Votante{
     }
 }
 
-public class UrnaElectoral {
-    private LinkedList<Candidato> listaCandidatos;
-    private Stack<Voto> historialVotos;
-    private Queue<Voto> votosReportados;
+public class UrnaElectoral{
+    private LinkedList <Candidato> listaCandidatos;
+    private Stack <Voto> historialVotos;
+    private Queue <Voto> votosReportados;
     private int idCounter = 0;
 
-    public UrnaElectoral() {
+    public UrnaElectoral(){
         this.listaCandidatos = new LinkedList<>();
         this.historialVotos = new Stack<>();
         this.votosReportados = new LinkedList<>();
     }
 
-    public boolean verificarVotante(Votante votante) {
+    public boolean verificarVotante(Votante votante){
         return votante.getYaVoto();
     }
 
-    public boolean registrarVoto(Votante votante, int candidatoId) {
-        if (!verificarVotante(votante)) {
-            LinkedList<Candidato> recorrer = listaCandidatos;
-            while (recorrer != null) {
-                if (recorrer.peek().getId() == candidatoId) {
+    public boolean registrarVoto(Votante votante, int candidatoId){
+        if (!verificarVotante(votante)){
+            for (Candidato c : listaCandidatos){
+                if (c.getId() == candidatoId){
                     SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-                    String timeStamp = sdf.format(new Date());  
-                    Voto registrarVoto = new Voto(this.idCounter, votante.getId(), candidatoId, timeStamp);
-                    idCounter++;
-                    recorrer.peek().agregarVoto(registrarVoto);
-                    historialVotos.add(registrarVoto);
+                    String timeStamp = sdf.format(new Date());
+                    Voto registrarVoto = new Voto(idCounter++, votante.getId(), candidatoId, timeStamp);
+                    c.agregarVoto(registrarVoto);
+                    historialVotos.push(registrarVoto);
                     votante.marcarComoVotado();
                     return true;
                 }
             }
         }
-        return false;
-    }
+    return false;
+   }
 
-    public boolean reportarVoto(int candidatoId, int votoId) {
-        for (Candidato c : listaCandidatos) {
-            if (c.getId() == candidatoId) {
+    public boolean reportarVoto(int candidatoId, int votoId){
+        for (Candidato c : listaCandidatos){
+            if (c.getId() == candidatoId){
                 Queue<Voto> votos = c.getVotosRecibidos();
-                for (Voto v : votos) {
-                    if (v.getId() == votoId) {
+                for (Voto v : votos){
+                    if (v.getId() == votoId){
                         votos.remove(v);
                         votosReportados.add(v);
                         return true;
@@ -150,9 +148,9 @@ public class UrnaElectoral {
         return false;
     }
 
-    public Map<Integer, Integer> obtenerResultados() {
+    public Map<Integer, Integer> obtenerResultados(){
         Map<Integer, Integer> resultados = new HashMap<>();
-        for (Candidato c : listaCandidatos) {
+        for (Candidato c : listaCandidatos){
             resultados.put(c.getId(), c.getVotosRecibidos().size());
         }
         return resultados;
